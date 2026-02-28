@@ -283,6 +283,8 @@ func (n *node) rebalance() *node {
 			n.refreshRank()
 			break
 		}
+		fmt.Println("after rotation")
+		n.preorder()
 	}
 	return n
 }
