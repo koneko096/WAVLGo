@@ -104,11 +104,14 @@ func (t *Tree) Delete(key keytype) {
 	}
 
 	if infix {
-		//	r = n.successor()
-		//	c := r.right
-		//	n.left.parent = r
-		//	n.right.parent = r
-		//	//px.
+		r = n.successor()
+		if n.right == r {
+			r.insertLeft(n.left)
+		} else {
+			r.parent.insertLeft(r.right)
+			r.insertLeft(n.left)
+			r.insertRight(r.parent)
+		}
 	}
 
 	if r != nil {
@@ -120,6 +123,7 @@ func (t *Tree) Delete(key keytype) {
 		} else {
 			p.left = r
 		}
+		r.parent = p
 	} else {
 		t.root = r
 	}
@@ -282,6 +286,18 @@ func (n *node) rebalance() *node {
 		}
 	}
 	return n
+}
+
+func (n *node) insertLeft(m *node) {
+	if m == nil { return }
+	n.left = m
+	m.par = n
+}
+
+func (n *node) insertRight(m *node) {
+	if m == nil { return }
+	n.right = m
+	m.par = n
 }
 
 func (n *node) refreshRank() {
