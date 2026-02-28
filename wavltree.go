@@ -286,14 +286,14 @@ func (n *node) rebalance() *node {
 }
 
 func (n *node) insertLeft(m *node) {
-	if m == nil { return }
 	n.left = m
+	if m == nil { return }
 	m.parent = n
 }
 
 func (n *node) insertRight(m *node) {
-	if m == nil { return }
 	n.right = m
+	if m == nil { return }
 	m.parent = n
 }
 
