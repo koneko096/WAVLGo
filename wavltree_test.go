@@ -121,9 +121,13 @@ func TestClear(t *testing.T) {
 
 func TestDelete2(t *testing.T) {
 	tree := NewTree()
+	tree.Preorder()
 	tree.Insert(key(4), "1qa")
+	tree.Preorder()
 	tree.Insert(key(2), "2ws")
+	tree.Preorder()
 	tree.Insert(key(3), "3ed")
+	tree.Preorder()
 	tree.Insert(key(1), "4rf")
 	tree.Insert(key(8), "5tg")
 	tree.Insert(key(5), "6yh")
