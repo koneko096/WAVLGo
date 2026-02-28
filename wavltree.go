@@ -281,8 +281,6 @@ func (n *node) rebalance() *node {
 			break
 		}
 		n.refreshRank()
-		fmt.Println("after rotation")
-		n.preorder()
 	}
 	return n
 }
@@ -308,6 +306,8 @@ func (n *node) rotateRight(p *node) *node {
 	n.insertRight(p)
 	p.refreshRank()
 	n.refreshRank()
+	fmt.Println("after right rotation")
+	n.preorder()
 	return n
 }
 
@@ -316,5 +316,7 @@ func (n *node) rotateLeft(p *node) *node {
 	n.insertLeft(p)
 	p.refreshRank()
 	n.refreshRank()
+	fmt.Println("after left rotation")
+	n.preorder()
 	return n
 }
