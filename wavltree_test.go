@@ -93,26 +93,19 @@ func TestDelete(t *testing.T) {
 	tree.Insert(key(5), "jcd4")
 	tree.Insert(key(2), "bcd4")
 
-	tree.Delete(key(4))
-	tree.Delete(key(5))
-	tree.Delete(key(1))
-	if tree.Size() != 3 {
-		t.Error("Delete Error")
+	for i := 1; i <= 6; i++ {
+		tree.Delete(key(i))
+		if tree.Size() != 6-i {
+			t.Error("Delete Error")
+		}
 	}
-	//
-	//for i := 1; i <= 6; i++ {
-	//	tree.Delete(key(i))
-	//	if tree.Size() != 6-i {
-	//		t.Error("Delete Error")
-	//	}
-	//}
-	//
-	//for i := 1; i <= 6; i++ {
-	//	if tree.Find(key(i)) != nil {
-	//		t.Error("Element not deleted")
-	//		break
-	//	}
-	//}
+	
+	for i := 1; i <= 6; i++ {
+		if tree.Find(key(i)) != nil {
+			t.Error("Element not deleted")
+			break
+		}
+	}
 }
 
 func TestClear(t *testing.T) {
