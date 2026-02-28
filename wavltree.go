@@ -258,31 +258,29 @@ func (n *node) rebalance() *node {
 
 	for {
 		if nr.Rank() > nl.Rank()+1 {
-			nrr := n.right.right
-			nrl := n.right.left
+			nrr := nr.right
+			nrl := nr.left
 			if nrl.Rank() > nrr.Rank() {
-				n.right = nrl.rotateRight(nr)
-				nr = n.right
+				nr = nrl.rotateRight(nr)
 			} else {
-				nl = n
 				n = nr.rotateLeft(n)
+				nl = n.left
 				nr = n.right
 			}
 		} else if nl.Rank() > nr.Rank()+1 {
-			nlr := n.left.right
-			nll := n.left.left
+			nlr := nl.right
+			nll := nl.left
 			if nlr.Rank() > nll.Rank() {
-				n.left = nlr.rotateRight(nl)
-				nl = n.left
+				nl = nlr.rotateLeft(nl)
 			} else {
-				nr = n
-				n = nl.rotateLeft(n)
+				n = nl.rotateRight(n)
+				nr = n.right
 				nl = n.left
 			}
 		} else {
-			n.refreshRank()
 			break
 		}
+		n.refreshRank()
 		fmt.Println("after rotation")
 		n.preorder()
 	}
@@ -306,26 +304,16 @@ func (n *node) refreshRank() {
 }
 
 func (n *node) rotateRight(p *node) *node {
-	p.left = n.right
-	if n.right != nil {
-		n.right.parent = p
-	}
-	n.parent = p.parent
-	n.right = p
-	p.parent = n
+	p.insertLeft(n.right)
+	n.insertRight(p)
 	p.refreshRank()
 	n.refreshRank()
 	return n
 }
 
 func (n *node) rotateLeft(p *node) *node {
-	p.right = n.left
-	if n.left != nil {
-		n.left.parent = p
-	}
-	n.parent = p.parent
-	n.left = p
-	p.parent = n
+	p.insertRight(n.left)
+	n.insertLeft(p)
 	p.refreshRank()
 	n.refreshRank()
 	return n
