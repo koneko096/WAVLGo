@@ -123,7 +123,6 @@ func (t *Tree) Delete(key keytype) {
 		} else {
 			p.left = r
 		}
-		r.parent = p
 	} else {
 		t.root = r
 	}
