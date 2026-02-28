@@ -303,6 +303,7 @@ func (n *node) refreshRank() {
 
 func (n *node) rotateRight(p *node) *node {
 	p.insertLeft(n.right)
+	n.parent = p.parent
 	n.insertRight(p)
 	p.refreshRank()
 	n.refreshRank()
@@ -313,6 +314,7 @@ func (n *node) rotateRight(p *node) *node {
 
 func (n *node) rotateLeft(p *node) *node {
 	p.insertRight(n.left)
+	n.parent = p.parent
 	n.insertLeft(p)
 	p.refreshRank()
 	n.refreshRank()
