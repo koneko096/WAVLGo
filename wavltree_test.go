@@ -132,7 +132,7 @@ func TestDelete3(t *testing.T) {
 	tree.Delete(key(1))
 	tree.Delete(key(2))
 
-	if tree.Find(key(6)) != nil {
+	if tree.Find(key(2)) != nil {
 		t.Error("Element not deleted")
 	}
 	if tree.Find(key(5)) == nil {
@@ -153,7 +153,7 @@ func TestDelete2(t *testing.T) {
 	tree.Delete(key(9))
 	tree.Delete(key(6))
 
-	if tree.Find(key(2)) != nil {
+	if tree.Find(key(6)) != nil {
 		t.Error("Element not deleted")
 	}
 	if tree.Find(key(5)) == nil {
