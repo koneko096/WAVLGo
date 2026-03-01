@@ -119,15 +119,11 @@ func TestClear(t *testing.T) {
 	}
 }
 
-func TestDelete2(t *testing.T) {
+func TestDelete3(t *testing.T) {
 	tree := NewTree()
-	tree.Preorder()
 	tree.Insert(key(4), "1qa")
-	tree.Preorder()
 	tree.Insert(key(2), "2ws")
-	tree.Preorder()
 	tree.Insert(key(3), "3ed")
-	tree.Preorder()
 	tree.Insert(key(1), "4rf")
 	tree.Insert(key(8), "5tg")
 	tree.Insert(key(5), "6yh")
@@ -135,6 +131,27 @@ func TestDelete2(t *testing.T) {
 	tree.Insert(key(9), "8ik")
 	tree.Delete(key(1))
 	tree.Delete(key(2))
+
+	if tree.Find(key(6)) != nil {
+		t.Error("Element not deleted")
+	}
+	if tree.Find(key(5)) == nil {
+		t.Error("Element not existed")
+	}
+}
+
+func TestDelete2(t *testing.T) {
+	tree := NewTree()
+	tree.Insert(key(5), "1qa")
+	tree.Insert(key(3), "2ws")
+	tree.Insert(key(8), "3ed")
+	tree.Insert(key(2), "4rf")
+	tree.Insert(key(4), "5tg")
+	tree.Insert(key(7), "6yh")
+	tree.Insert(key(9), "7uj")
+	tree.Insert(key(1), "8ik")
+	tree.Delete(key(9))
+	tree.Delete(key(6))
 
 	if tree.Find(key(2)) != nil {
 		t.Error("Element not deleted")
