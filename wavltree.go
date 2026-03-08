@@ -9,6 +9,7 @@ type keytype interface {
 	Equal(interface{}) bool
 }
 
+// Iterator is tree node pointer which can traverse the tree
 type Iterator interface {
 	IsNil() bool
 	Next() Iterator
@@ -26,13 +27,13 @@ type node struct {
 	rank                int
 }
 
-// Tree is a struct of red-black tree
+// Tree is a struct of weak AVL tree
 type Tree struct {
 	root *node
 	size int
 }
 
-// NewTree returns a new rbtree
+// NewTree returns a new tree struct
 func NewTree() *Tree {
 	return &Tree{}
 }
@@ -59,23 +60,23 @@ func (t *Tree) Empty() bool {
 	return false
 }
 
-// Iterator creates the rbtree's iterator that points to the minmum node
+// Iterator creates the node iterator start from most left node
 func (t *Tree) Iterator() Iterator {
 	return t.root.minimum()
 }
 
-// Size returns the size of the rbtree
+// Size returns the size of the tree
 func (t *Tree) Size() int {
 	return t.size
 }
 
-// Clear destroys the rbtree
+// Clear destroys the tree
 func (t *Tree) Clear() {
 	t.root = nil
 	t.size = 0
 }
 
-// Insert inserts the key-value pair into the rbtree
+// Insert inserts the key-value pair into the tree
 func (t *Tree) Insert(key keytype, value valuetype) {
 	t.root = t.root.insert(&node{
 		key:   key,
@@ -105,13 +106,16 @@ func (t *Tree) Delete(key keytype) {
 
 	if infix {
 		r = n.successor()
-		if n.right == r {
-			r.insertLeft(n.left)
-		} else {
-			r.parent.insertLeft(r.right)
-			r.insertLeft(n.left)
-			r.insertRight(r.parent)
-		}
+		rp := r.parent
+		go func() {
+			if n.right == r {
+				r.insertLeft(n.left)
+			} else {
+				rp.insertLeft(r.right)
+				r.insertLeft(n.left)
+				r.insertRight(rp)
+			}
+		}()
 	}
 
 	if r != nil {
@@ -138,7 +142,7 @@ func (t *Tree) Preorder() {
 	fmt.Println("preorder end!")
 }
 
-// findnode finds the node by key and return it,if not exists return nil
+// findnode finds the node by key and return it, if not exists return nil
 func (n *node) findnode(key keytype) *node {
 	if n == nil {
 		return nil
@@ -287,13 +291,17 @@ func (n *node) rebalance() *node {
 
 func (n *node) insertLeft(m *node) {
 	n.left = m
-	if m == nil { return }
+	if m == nil {
+		return
+	}
 	m.parent = n
 }
 
 func (n *node) insertRight(m *node) {
 	n.right = m
-	if m == nil { return }
+	if m == nil {
+		return
+	}
 	m.parent = n
 }
 
@@ -307,8 +315,6 @@ func (n *node) rotateRight(p *node) *node {
 	n.insertRight(p)
 	p.refreshRank()
 	n.refreshRank()
-	fmt.Println("after right rotation")
-	n.preorder()
 	return n
 }
 
@@ -318,7 +324,5 @@ func (n *node) rotateLeft(p *node) *node {
 	n.insertLeft(p)
 	p.refreshRank()
 	n.refreshRank()
-	fmt.Println("after left rotation")
-	n.preorder()
 	return n
 }
